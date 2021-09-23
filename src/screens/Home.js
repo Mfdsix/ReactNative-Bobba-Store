@@ -1,66 +1,81 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import {Icon} from 'react-native-elements';
-import Layout from '../Layout';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import bobbas from '../sources/Bobbas';
 
 const cardBg = ['#4f81e5', '#6ad6e8'];
 
 export default function Home({navigation}) {
-  function goToDetailPage(id = 1) {
-    navigation.navigate('Detail', {id: id});
+  function goToDetailPage(bobba) {
+    navigation.navigate('Detail', bobba);
   }
 
   return (
-    <Layout>
-      {/* header section */}
-      <View style={headerStyles.container}>
-        <View>
-          <Text style={headerStyles.headerTitle}>Good{'\n'}Morning!</Text>
-          <Text style={headerStyles.headerDescription}>
-            Enjoy free shipping, enjoy our sweeties
-          </Text>
-        </View>
-        <TouchableOpacity style={headerStyles.iconWrapper}>
-          <Icon name="ios-cart" type="ionicon" />
-          <Text style={headerStyles.iconBadge}>2</Text>
-        </TouchableOpacity>
-      </View>
-      {/* body section */}
-      <View style={bodyStyles.container}>
-        <View style={bodyStyles.headerWrapper}>
-          <Text style={bodyStyles.headerTitle}>Popular Sweeties</Text>
-          <TouchableOpacity>
-            <Text style={bodyStyles.headerDescription}>See All</Text>
+    <SafeAreaProvider style={styles.safeArea}>
+      <ScrollView>
+        {/* header section */}
+        <View style={headerStyles.container}>
+          <View>
+            <Text style={headerStyles.headerTitle}>Good{'\n'}Morning!</Text>
+            <Text style={headerStyles.headerDescription}>
+              Enjoy free shipping, enjoy our sweeties
+            </Text>
+          </View>
+          <TouchableOpacity style={headerStyles.iconWrapper}>
+            <Icon name="ios-cart" type="ionicon" />
+            <Text style={headerStyles.iconBadge}>2</Text>
           </TouchableOpacity>
         </View>
-        {bobbas.map((bobba, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[
-              cardStyles.container,
-              {
-                backgroundColor: cardBg[index % 2],
-              },
-            ]}
-            onPress={() => goToDetailPage(1)}>
-            <View>
-              <Text style={cardStyles.cardDescription}>
-                Start From {bobba.price}
-              </Text>
-              <Text style={cardStyles.cardTitle}>{bobba.title}</Text>
-            </View>
-            <Image style={cardStyles.cardImage} source={bobba.image} />
-            <Image
-              style={cardStyles.cardOrnamet}
-              source={require('../assets/ornaments/circle.png')}
-            />
-          </TouchableOpacity>
-        ))}
-      </View>
-    </Layout>
+        {/* body section */}
+        <View style={bodyStyles.container}>
+          <View style={bodyStyles.headerWrapper}>
+            <Text style={bodyStyles.headerTitle}>Popular Sweeties</Text>
+            <TouchableOpacity>
+              <Text style={bodyStyles.headerDescription}>See All</Text>
+            </TouchableOpacity>
+          </View>
+          {bobbas.map((bobba, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                cardStyles.container,
+                {
+                  backgroundColor: cardBg[index % 2],
+                },
+              ]}
+              onPress={() => goToDetailPage(bobba)}>
+              <View>
+                <Text style={cardStyles.cardDescription}>
+                  Start From {bobba.price}
+                </Text>
+                <Text style={cardStyles.cardTitle}>{bobba.title}</Text>
+              </View>
+              <Image style={cardStyles.cardImage} source={bobba.image} />
+              <Image
+                style={cardStyles.cardOrnamet}
+                source={require('../assets/ornaments/circle.png')}
+              />
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
+    </SafeAreaProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  safeArea: {
+    backgroundColor: '#ffffff',
+  },
+});
 
 const headerStyles = StyleSheet.create({
   container: {
